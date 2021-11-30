@@ -10,7 +10,22 @@ t_bridge *parse_bridge(const char *str, int first_size, int second_size)
     names = mx_strsplit(slice[0], '-');        
     bridge->from = mx_strdup(names[0]);
     bridge->to = mx_strdup(names[1]);
-    mx_del_strarr(&names);
-    mx_del_strarr(&slice);
+
+    char **dst = names;
+	while (*dst) {
+		mx_strdel(dst++);
+	}
+	free(names);
+    names = NULL;
+    //mx_del_strarr(&names);
+
+    dst = slice;
+	while (*dst) {
+		mx_strdel(dst++);
+	}
+	free(slice);
+    slice = NULL;
+
+    //mx_del_strarr(&slice);
     return bridge;
 }

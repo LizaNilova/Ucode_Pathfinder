@@ -20,10 +20,10 @@ void finding_paths(t_bridge **bridges, char **nodes, int count_nodes, int count)
 void set_weight_for_islands(int **weights, char **nodes, char *s, int waight);
 void find_one_of_paths(int *weights, char **nodes, t_bridge **bridges, int count);
 void free_bridges(t_bridge ***bridges);
+void formating_bridges(t_bridge **bridges, char **islands);
 void print_path(int *weights, char **nodes, t_bridge **bridges, int count, char *from, int bridge_count);
 int get_path(int *len, int *weights, char **nodes, t_bridge **bridges, int count, char *from, char **path, int *blacklist, int *block, int *permo_block);
 int get_weight_of_island(char **islands, int *weights, char *s);
-bool blacklisted(int c, int *blacklist, int size);
 bool is_visited(char **visited, char *s, int visits);
 bool unic_island(char *island, char **islands);
 

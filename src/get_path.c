@@ -11,14 +11,25 @@ int get_path(int *length, int *weights, char **islands, t_bridge **bridges, int 
     path[0] = from;
     int needed_bridge = -1;
     bool flag = true;
-    bool f = true;
+    bool fl = true;
+    
     for (int j = 0; j < count + 1 && flag; j++)
     {
-        f = true;
+        fl = true;
         from_weight = get_weight_of_island(islands, weights, from);
         for (int i = 0; bridges[i] != NULL; i++)
         {
-            if (blacklisted(i, blacklist, *block)) continue;
+            bool blacklisted = false;
+            for (int ii = 0; ii < *block; ii++)
+            {
+                if (blacklist[ii] == i)
+                    blacklisted = true;
+            }
+            if (blacklisted)
+            {
+                continue;
+            }
+
             if (!mx_strcmp(bridges[i]->from, from))
             {
                 cisland = bridges[i]->to;
@@ -31,8 +42,16 @@ int get_path(int *length, int *weights, char **islands, t_bridge **bridges, int 
                 cweight = get_weight_of_island(islands, weights, bridges[i]->from);
                 clength = bridges[i]->length;
             }
-            else continue;
-            if (from_weight < clength) continue;
+            else
+            {
+                continue;
+            }
+
+            if (from_weight < clength)
+            {
+                continue;
+            }
+
             if (cweight == 0)
             {
                 blacklist[*block] = i;
@@ -41,7 +60,7 @@ int get_path(int *length, int *weights, char **islands, t_bridge **bridges, int 
                 length[steps - 1] = clength;
                 steps++;
                 flag = false;
-                f = false;
+                fl = false;
                 needed_bridge = i;
                 break;
             }
@@ -52,11 +71,11 @@ int get_path(int *length, int *weights, char **islands, t_bridge **bridges, int 
                 from = cisland;
                 path[steps] = from;
                 steps++;
-                f = false;
+                fl = false;
                 break;
             }
         }
-        if (f)
+        if (fl)
         {
             if (!mx_strcmp(from, path[0]))
             {
@@ -67,16 +86,14 @@ int get_path(int *length, int *weights, char **islands, t_bridge **bridges, int 
             steps = 1;
             blacklist[*block] = prev_bridge_i;
             *block += 1;
-            if (!mx_strcmp(bridges[prev_bridge_i]->from, path[0])
-                || !mx_strcmp(bridges[prev_bridge_i]->to, path[0]))
+            if (!mx_strcmp(bridges[prev_bridge_i]->to, path[0]) || !mx_strcmp(bridges[prev_bridge_i]->from, path[0]))
             {
                 blacklist[*permo_block] = prev_bridge_i;
                 *permo_block += 1;
                 *block = *permo_block;
             }
         }
-        if (!flag && (!mx_strcmp(bridges[needed_bridge]->from, path[0])
-            || !mx_strcmp(bridges[needed_bridge]->to, path[0])))
+        if (!flag && (!mx_strcmp(bridges[needed_bridge]->from, path[0]) || !mx_strcmp(bridges[needed_bridge]->to, path[0])))
         {
             blacklist[*permo_block] = needed_bridge;
             *permo_block += 1;

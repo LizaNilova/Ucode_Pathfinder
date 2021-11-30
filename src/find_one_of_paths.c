@@ -7,7 +7,8 @@ void find_one_of_paths(int *weights, char **islands, t_bridge **bridges, int cou
     int visits = 0;
     int min = 0;
     int weight = 0;
-    for (int i = 0; i < count_of_islands; i++)
+    int i = 0;
+    while (i < count_of_islands)
     {
         min = 0;
         while (is_visited(visited, islands[min], visits)) min++;
@@ -21,23 +22,32 @@ void find_one_of_paths(int *weights, char **islands, t_bridge **bridges, int cou
             }
         }
         cur = islands[min];
-        for (int j = 0; bridges[j] != NULL; j++)
+        int j = 0;
+        while(bridges[j] != NULL)
         {
             if (!mx_strcmp(bridges[j]->from, cur))
             {
-                if (is_visited(visited, bridges[j]->to, visits)) continue;
+                if (is_visited(visited, bridges[j]->to, visits)){
+                    j++;
+                    continue;
+                } 
                 weight = get_weight_of_island(islands, weights, cur);
                 set_weight_for_islands(&weights, islands, bridges[j]->to, weight + bridges[j]->length);
             }
             else if (!mx_strcmp(bridges[j]->to, cur))
             {
-                if (is_visited(visited, bridges[j]->from, visits)) continue;
+                if (is_visited(visited, bridges[j]->from, visits)){
+                    j++;
+                    continue;
+                } 
                 weight = get_weight_of_island(islands, weights, cur);
                 set_weight_for_islands(&weights, islands, bridges[j]->from, weight + bridges[j]->length);
             }
+            j++;
         }
         visited[visits] = cur;
         visits++;
+        i++;
     }
     free(visited);
 }

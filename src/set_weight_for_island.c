@@ -2,7 +2,8 @@
 
 void set_weight_for_islands(int **weights, char **islands, char *s, int waight)
 {
-    for (int i = 0; islands[i] != NULL; i++)
+    int i = 0; 
+    while(islands[i] != NULL)
     {
         if (!mx_strcmp(islands[i], s))
         {
@@ -10,5 +11,6 @@ void set_weight_for_islands(int **weights, char **islands, char *s, int waight)
             (*weights)[i] = waight;
             return;
         }
+        i++;
     }
 }
